@@ -15,7 +15,7 @@ void printa_matriz(int **matriz, int m, int n){
 }
 
 int **aloca_matriz(int **mat,int m, int n){
-    int i,j;
+    int i;
     mat = (int **) calloc(m, sizeof(int *));
     for(i = 0; i < m; i++){
         mat[i] = (int *) calloc(n, sizeof(int));
@@ -32,7 +32,7 @@ int main(){
 
     ifstream entrada;
     string linha;
-    int m = 0, n = 0, contador = 0, **matriz;
+    int m = 0, n = 0, contador = 0, **matriz = nullptr;
 
     entrada.open("entrada.txt");
 
@@ -40,6 +40,8 @@ int main(){
         cerr << "Erro ao abrir o arquivo.";
         return false;
     }
+
+    cout << "Entrada" << endl;
 
     while(!entrada.eof()) {
         getline(entrada,linha);
@@ -54,6 +56,7 @@ int main(){
 
     // Matriz de m linhas por n colunas
     matriz = aloca_matriz(matriz, m, n);
-    
+    cout << "\n" << "matriz " << m << "x" << n << endl;
+
     printa_matriz(matriz, m, n);
 }
