@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <new>
+#include <sstream>
 
 using namespace std;
 
@@ -12,6 +13,13 @@ using namespace std;
     **  4. Pegar as restrições e aplicar na matriz
     **  5. Simplificar o problema
 */
+
+// Função que transforma uma string em um inteiro
+int string_to_int(string str){
+    int s;
+    istringstream(str) >> s;
+    return s;
+}
 
 // Função string to array, converte uma string de numeros em um array desses numeros
 int *string_to_array(string str){
@@ -43,11 +51,11 @@ int *string_to_array(string str){
                         c += str[j];
                         ++j;
                     }
+                    arr[i] = stoi(c);
                 }
             }
             i = j;
-            arr[i] = stoi(c);
-        }
+}
         return arr;
     }
 }
