@@ -23,3 +23,9 @@ main2.cpp
 main2.exe
 main2.exe
 main2.exe
+*.json
+.vscode/launch.json
+.vscode/settings.json
+teste-lucas.cpp
+teste-lucas.exe
+pi-teste.exe
