@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 #include <new>
-#include <sstream>
+#include <array>
 
 using namespace std;
 
@@ -14,48 +14,46 @@ using namespace std;
     **  5. Simplificar o problema
 */
 
-// Função que transforma uma string em um inteiro
-int string_to_int(string str){
-    int s;
-    istringstream(str) >> s;
-    return s;
+// Função que conta os espaços de uma string. Usamos ela para obtermos apenas o tamanho da string sem os espaços.
+int conta_espacos(string str){
+    int num_espacos = 0;
+    for(int i = 0; i < str.length(); i++){
+        if(str[i] == ' ')
+            num_espacos++;
+        if(str[i] == '\n'){
+            num_espacos = 0;
+            break;
+        }
+    }
+    return num_espacos;
 }
 
-// Função string to array, converte uma string de numeros em um array desses numeros
 int *string_to_array(string str){
-    int k= 0, j = 0;
+    int cont = 0, k= 0, j = 0;
     string c;
-    int *arr = new(nothrow) int[str.length()];
+
+    int *arr = new(nothrow) int[str.length() - conta_espacos(str)];
 
     if(arr != nullptr) {
-        // for (int i = 0; i < str.length(); i++) {
-        //     j = i;
-        //     if (str[i] != ' '){ 
-        //             while(str[j] != ' ' ){
-        //                 c += str[j];
-        //                 j++;
-        //                 if(str[j] == ' '){
-        //                     continue;
-        //                 }
-        //             }
-        //             arr[i] = stoi(c);   
-        //     }
-        // }
         for (int i = 0; i < str.length(); i++) {
             j = i;
-            while (str[j] != ' '){
-                --j;
-                if(str[j] == ' '){
-                    ++j;
-                    while (str[j] != ' '){
+            if(str[i] != ' '){
+                while(str[j] != ' '){
+                    if(str[j] != '\n'){
                         c += str[j];
                         ++j;
                     }
-                    arr[i] = stoi(c);
+                    else break;
                 }
+                if(str[j] != '\n'){
+                    arr[k++] = stoi(c);
+                    c.clear();
+                }
+                else break;
             }
-            i = j;
-}
+            else{++j;}
+            i = j - 1;
+        }
         return arr;
     }
 }
@@ -89,7 +87,7 @@ int main(){
 
     ifstream entrada; // var responsavel pela abertura de um arquivo
     string linha;
-    int m = 0, n = 0, contador = 0, **matriz = nullptr, *restr = nullptr;
+    int m = 0, n = 0, contador = 0, **matriz = nullptr, *restr = nullptr, *restr_matriz = nullptr;
 
     entrada.open("entrada.txt"); // abre o arquivo
 
@@ -98,7 +96,7 @@ int main(){
         return false;
     }
 
-    cout << "Entrada" << endl;
+    //cout << "Entrada" << endl;
 
     // Usa um contador para armazenar o numero da linha atual do arquivo, e obter os dados do mesmo
     while(!entrada.eof()) {
@@ -113,13 +111,13 @@ int main(){
         else{
             // Aqui printa a linha atual e embaixo printa os elementos dessa linha convertidos em int
             // pelo método string_to_array()
-            cout << "Linha: " << linha << endl;
-            cout << "linha em um array de int: " << endl;
-            for (int i = 0; i < linha.length(); ++i) {
-                cout << string_to_array(linha)[i] << " ";
-            }
-            cout << "tamanho da linha: " << linha.length() <<endl;
-            //restr[contador-2] = *string_to_array(linha);
+            cout << linha << endl;
+            cout << "linha em um array de int: ";
+            restr_matriz = new(nothrow) int[10];
+            restr = string_to_array(linha);
+            for (int i = 0; i < (conta_espacos(linha)); ++i)
+                cout << restr[i] << " ";
+            cout << endl;
         }
         contador++;
     }
@@ -129,9 +127,16 @@ int main(){
     matriz = aloca_matriz(matriz, m, n);
 
     //cout << "\n" << "matriz " << m << "x" << n << endl;
+
+    // i = posição do 1 - 1, j = linha -1
+    for(int i = 0; i < 5; i++)
+        for(int j = 0; j < 4; j++){
+            if(i == restr[i] - 1 && j == 0){
+                matriz[i][j] = restr[j];
+            }
+        }
+
     //printa_matriz(matriz, m, n);
-    //for (int i = 0; i < m-2; i++)
-    //cout << linha.length() << " ";
 
     delete[] matriz;
 }
