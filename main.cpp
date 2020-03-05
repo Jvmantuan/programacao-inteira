@@ -88,27 +88,27 @@ int main() {
 
     int min = 1000000, n_elementos = 0, lin = 0, col = 0;
 
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            if (qtd_elementos(matriz, i, j) <= min) {
-                n_elementos = qtd_elementos(matriz, i, j);
-                if (n_elementos == 1) {
-                    lin = i;
-                    col = j;
-                    if (matriz[lin][col] == matriz[j][col])
-                        matriz[j][col] = 0;
-                } else
-                    break;
-            }
-        }
-    }
-
-    for (int i = 0; i < m; ++i) {
-        for (int j = 0; j < n; ++j) {
-            if (matriz[lin][col] == matriz[j][col])
-                matriz[j][col] = 0;
-        }
-    }
+//    for (int i = 0; i < m; i++) {
+//        for (int j = 0; j < n; j++) {
+//            if (qtd_elementos(matriz, i, j) <= min) {
+//                n_elementos = qtd_elementos(matriz, i, j);
+//                if (n_elementos == 1) {
+//                    lin = i;
+//                    col = j;
+//                    if (matriz[lin][col] == matriz[j][col])
+//                        matriz[j][col] = 0;
+//                } else
+//                    break;
+//            }
+//        }
+//    }
+//
+//    for (int i = 0; i < m; ++i) {
+//        for (int j = 0; j < n; ++j) {
+//            if (matriz[lin][col] == matriz[j][col])
+//                matriz[j][col] = 0;
+//        }
+//    }
 
     printar_matriz(matriz, m, n);
 
