@@ -4,14 +4,6 @@
 
 using namespace std;
 
-/*
-    **  1. Ler arquivo (ok)
-    **  2. Pegar num de linhas e colunas (ok)
-    **  3. Criar matriz com m linhas e n colunas (ok)
-    **  4. Pegar as restri��es e aplicar na matriz (ok)
-    **  5. Simplificar o problema
-*/
-
 // Retorna a quantidade de elementos que uma linha tem
 int qtd_elementos(int **matriz, int n_linhas, int n_colunas) {
     int soma = 0;
@@ -20,7 +12,6 @@ int qtd_elementos(int **matriz, int n_linhas, int n_colunas) {
         if (matriz[n_linhas][j] == 1)
             soma++;
     }
-
     return soma;
 }
 
@@ -54,7 +45,7 @@ int main() {
     int j = 0, m = 0, n = 0, contador = 0;
 
 
-    entrada.open("entrada1.txt"); // abre o arquivo
+    entrada.open("entrada.txt"); // abre o arquivo
 
     if (!entrada.is_open()) {
         cerr << "Erro ao abrir o arquivo.";
@@ -68,22 +59,23 @@ int main() {
     n = stoi(linha); //Obtém o numero de subconjuntos
 
     int **matriz = aloca_matriz(matriz, m, n);
-
-    while (getline(entrada, linha)) {
+    for (j = 0; j < n; ++j) {
+    getline(entrada, linha);
+    //while (getline(entrada, linha)) {
         c.clear();
         for (int i = 0; i < linha.length(); i++) {
-            if (linha[i] != ' ')
+            if (linha[i] != ' ') {
                 c += linha[i];
-            else {
-                //cout << c << endl;
+            } else {
                 matriz[stoi(c) - 1][j] = 1;
                 c.clear();
             }
         }
         matriz[stoi(c) - 1][j] = 1;
         c.clear();
-        j++;
     }
+        //j++;
+
     entrada.close();
 
     int min = 1000000, n_elementos = 0, lin = 0, col = 0;
@@ -102,18 +94,8 @@ int main() {
 //            }
 //        }
 //    }
-//
-//    for (int i = 0; i < m; ++i) {
-//        for (int j = 0; j < n; ++j) {
-//            if (matriz[lin][col] == matriz[j][col])
-//                matriz[j][col] = 0;
-//        }
-//    }
 
     printar_matriz(matriz, m, n);
-
-    //cout << endl;
-    //cout << n_elementos << endl;
 
     free(matriz);
 }
