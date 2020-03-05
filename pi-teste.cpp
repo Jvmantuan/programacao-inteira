@@ -28,7 +28,7 @@ int **aloca_matriz(int **mat, int m, int n) {
     return mat;
 }
 
-void printar_matriz(int **matriz, int linhas, int colunas){
+void printar_matriz(int **matriz, int linhas, int colunas) {
     for (int i = 0; i < linhas; i++) {
         for (int j = 0; j < colunas; j++)
             cout << matriz[i][j] << " ";
@@ -56,12 +56,11 @@ int main() {
     getline(entrada, linha);
     n = stoi(linha);
 
-    int **matriz = aloca_matriz(matriz,m,n);
+    int **matriz = aloca_matriz(matriz, m, n);
     //int matriz[m][n];
 
     j = 0;
-    //for(j = 0; j < n; j++) {
-        while (getline(entrada, linha)) {
+    while (getline(entrada, linha)) {
         c.clear();
         for (int i = 0; i < linha.length(); i++) {
             if (linha[i] != ' ')
@@ -73,12 +72,17 @@ int main() {
             }
         }
         matriz[stoi(c) - 1][j] = 1;
-		c.clear();
-	//	j++;
-    }  
+        c.clear();
+        j++;
+    }
     entrada.close();
-    
-    printar_matriz(matriz, m, n);
+
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++)
+            cout << matriz[i][j] << " ";
+        cout << endl;
+    }
+    //printar_matriz(matriz, m, n);
 
     free(matriz);
 }
