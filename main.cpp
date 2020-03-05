@@ -160,13 +160,16 @@ int main(){
             //cout << endl;
 
             // i = posição do 1 - 1, j = linha -1
-            for(int i = 0; i < n; i++){
-                for(int j = 0; j < m; j++){
-                    for(int k = 0; k < 3; k++)
-                        matriz[restr[j] - 1][contador - 3] = 1;
+            for(int i = 0; i < m; i++){
+                for(int j = 0; j < n; j++){
+                    for(int k = 0; k < 3; k++){
+                        cout << restr[k] << ' ';
+                     // matriz[(restr[k] - 1)][contador - 2] = 1;
+                    }
+                    cout << endl;
                 }
             }
-        }
+         }
         contador++;
     }
 
