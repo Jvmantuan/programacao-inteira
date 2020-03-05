@@ -64,7 +64,6 @@ void printa_matriz(int **matriz, int m, int n){
     for (int i = 0; i < m; i++){
         for (int j = 0; j < n; j++)
             cout << matriz[i][j] << " ";
-
         cout << endl;
     }
 }
@@ -112,12 +111,13 @@ int main(){
         else{
             // Aqui printa a linha atual e embaixo printa os elementos dessa linha convertidos em int
             // pelo método string_to_array()
-            cout << linha << endl;
+            //cout << linha << endl;
             //cout << "linha em um array de int: " << endl;
             restr_matriz = new(nothrow) int[10];
             restr = string_to_array(linha);
-            //for (int i = 0; i < conta_char(linha); ++i)
-            //    cout << restr[i] << " ";
+            for (int i = 0; i < conta_char(linha); ++i)
+                cout << restr[i] << " ";
+            cout << endl;
 
 
         }
@@ -128,7 +128,7 @@ int main(){
     // Matriz de m linhas por n colunas
     matriz = aloca_matriz(matriz, m, n);
 
-    cout << "\n" << "matriz " << m << "x" << n << endl;
+    //cout << "\n" << "matriz " << m << "x" << n << endl;
 
     // i = posição do 1 - 1, j = linha -1
     for(int i = 0; i < 5; i++)
@@ -138,7 +138,7 @@ int main(){
             }
         }
 
-    printa_matriz(matriz, m, n);
+    //printa_matriz(matriz, m, n);
 
     delete[] matriz;
 }
