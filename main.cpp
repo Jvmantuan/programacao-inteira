@@ -4,12 +4,12 @@
 
 using namespace std;
 
-// Retorna a quantidade de elementos que uma linha tem
+// Retorna a quantidade de elementos maiores ou iguais que 1
 int qtd_elementos(int **matriz, int n_linhas, int n_colunas) {
     int soma = 0;
 
     for (int j = 0; j < n_colunas; j++) {
-        if (matriz[n_linhas][j] == 1)
+        if (matriz[n_linhas][j] >= 1)
             soma++;
     }
     return soma;
@@ -59,6 +59,8 @@ int main() {
     n = stoi(linha); //Obtém o numero de subconjuntos
 
     int **matriz = aloca_matriz(matriz, m, n);
+    int **matriz_aux = aloca_matriz(matriz_aux, m, n);
+
     for (j = 0; j < n; ++j) {
     getline(entrada, linha);
     //while (getline(entrada, linha)) {
