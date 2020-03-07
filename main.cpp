@@ -38,9 +38,37 @@ void printar_matriz(int **matriz, int linhas, int colunas) {
     }
 }
 
+void print_saida(int m, int n){
+    int i = 1;
+    string obj;
+    cout << "   Minimize" << endl;
+    cout << "obj: ";
+    while(i <= m){
+        obj += "x" << i << " + ";
+        obj.erase(obj.end() - 3, 3);
+        i++;
+    }
+    cout << obj << endl;
+    cout << "\nSubject To" << endl;
+    cout << "Bounds";
+    i = 1;
+    while(i <= m){
+        cout << "0 <= x" + i + " <= 1\n";
+        i++;
+    }
+    cout << "General" << endl;
+    i = 1;
+    while(i <= m){
+        cout << " x" << i;
+        i++;
+    }
+    cout << "\nEnd" << endl;
+}
+
 int main() {
 
     ifstream entrada; // var responsavel pela abertura de um arquivo
+    ofstream saida; //
     string linha, c;
     int j = 0, m = 0, n = 0, contador = 0;
 
@@ -96,6 +124,11 @@ int main() {
 //            }
 //        }
 //    }
+
+    saida.open("saida.txt", ios::app);
+    saida << print_saida(m, n) << endl;
+
+    saida.close();
 
     printar_matriz(matriz, m, n);
 
