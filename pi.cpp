@@ -30,6 +30,12 @@ int **aloca_matriz(int **mat, int m, int n) {
     return mat;
 }
 
+void printar_vetor(int *v, int elem) {
+    for (int i = 0; i < elem; i++) {
+            cout << v[i] << " ";
+    }
+}
+
 void printar_matriz(int **matriz, int linhas, int colunas) {
     for (int i = 0; i < linhas; i++) {
         for (int j = 0; j < colunas; j++)
@@ -54,13 +60,13 @@ int main() {
     }
 
     getline(entrada, linha);
-    m = stoi(linha); //Obtém o numero de objetos
+    m = stoi(linha); //ObtÃ©m o numero de objetos
 
     getline(entrada, linha);
-    n = stoi(linha); //Obtém o numero de subconjuntos
+    n = stoi(linha); //ObtÃ©m o numero de subconjuntos
 
     int **matriz = aloca_matriz(matriz, m, n);
-    int **matriz_aux = aloca_matriz(matriz_aux, m, n);
+    int *vetor_aux = (int *) calloc(n, sizeof(int));
 
     while (getline(entrada, linha)) {
         c.clear();
@@ -80,17 +86,28 @@ int main() {
     entrada.close();
 
     int min = 1000000, n_elementos = 0, lin = 0, col = 0;
+	int var[n], v_aux[n];
 	
 	for(int i = 0; i < m; i++){
 		for(int j = 0; j < n; j++){
 			if(i >= 1){
-				matriz_aux[i][j] = matriz[i][j] + matriz[i-1][j];
+				v_aux = matriz[i][j] + matriz[i-1][j];
+				for(int k = 0; k < n; k++)
+					if(v_aux[k] == 2){
+						
+					}
+				if(qtd_elementos(matriz,i,n) == 1) var[j] = 1;		
 			}
 			//for(int k = 0; k < )
 		}
 	}
-	
-    printar_matriz(matriz_aux, m, n);
+	cout << endl;
+    printar_matriz(matriz, m, n);
+    cout << endl;
+    //printar_vetor(vetor_aux, n);
+	for(int i = 0; i < n; i++)
+		cout << var[i] << " ";
+	cout << endl;
 
     free(matriz);
 }
