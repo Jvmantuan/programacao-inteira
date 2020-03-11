@@ -83,23 +83,24 @@ int main() {
 	
 	for (int i = 0; i < m-1; i++) {
 		for (int k = i+1; k < m; k++) {
-				for (int j = 0; j < n; j++)
+				for (int j = 0; j < n; j++){
 					if(matriz[i][j] + matriz[k][j] == 2){
 						vector_aux[j] = 1;
 						soma_aux++;
 					}else
 						vector_aux[j] = 0;
-			tam1 = qtd_elementos(matriz,i,n);
-			tam2 = qtd_elementos(matriz,k,n);
-			if(tam1 == soma_aux)
-				matriz[k][j] = 0;
-			else if(tam2 == soma_aux)
-				matriz[i][j] = 0;
+				}
+						
+			if(qtd_elementos(matriz,i,n) == soma_aux) 
+				for(int j = 0; j < n; j++) 
+					matriz[k][j] = 3;
+			else if(qtd_elementos(matriz,k,n) == soma_aux) 
+				for(int j = 0; j < n; j++) 
+					matriz[i][j] = 4;
 			
 		}
 	}
 	
-
     saida.open("saidajv.txt", ios::out);
 
     saida << "Minimize" << endl;
@@ -134,6 +135,9 @@ int main() {
     saida << "\nEnd" << endl;
     
     saida.close();
+	
+	//for(int i = 0; i < n; i++) cout << soma_aux[i] << " ";
+	printar_matriz(matriz,m,n);
 	
     free(matriz);
 }
