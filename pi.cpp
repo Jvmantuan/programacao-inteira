@@ -5,11 +5,11 @@
 using namespace std;
 
 // Retorna a quantidade de elementos maiores ou iguais que 1
-int qtd_elementos(int **matriz, int n_linhas, int n_colunas) {
+int qtd_elementos(int **matriz, int linha, int n_colunas) {
     int soma = 0;
 
     for (int j = 0; j < n_colunas; j++) {
-        if (matriz[n_linhas][j] >= 1)
+        if (matriz[linha][j] >= 1)
             soma++;
     }
     return soma;
@@ -30,12 +30,6 @@ int **aloca_matriz(int **mat, int m, int n) {
     return mat;
 }
 
-void printar_vetor(int *v, int elem) {
-    for (int i = 0; i < elem; i++) {
-            cout << v[i] << " ";
-    }
-}
-
 void printar_matriz(int **matriz, int linhas, int colunas) {
     for (int i = 0; i < linhas; i++) {
         for (int j = 0; j < colunas; j++)
@@ -47,9 +41,9 @@ void printar_matriz(int **matriz, int linhas, int colunas) {
 int main() {
 
     ifstream entrada; // var responsavel pela abertura de um arquivo
-    ofstream saida; //
+    ofstream saida; 
     string linha, c;
-    int j = 0, m = 0, n = 0, contador = 0;
+    int j = 0, m = 0, n = 0, contador = 0,obj, i;
 
 
     entrada.open("entrada.txt"); // abre o arquivo
@@ -66,7 +60,6 @@ int main() {
     n = stoi(linha); //Obtém o numero de subconjuntos
 
     int **matriz = aloca_matriz(matriz, m, n);
-    int *vetor_aux = (int *) calloc(n, sizeof(int));
 
     while (getline(entrada, linha)) {
         c.clear();
@@ -84,30 +77,63 @@ int main() {
     }
 
     entrada.close();
-
-    int min = 1000000, n_elementos = 0, lin = 0, col = 0;
-	int var[n], v_aux[n];
 	
-	for(int i = 0; i < m; i++){
-		for(int j = 0; j < n; j++){
-			if(i >= 1){
-				v_aux = matriz[i][j] + matriz[i-1][j];
-				for(int k = 0; k < n; k++)
-					if(v_aux[k] == 2){
-						
-					}
-				if(qtd_elementos(matriz,i,n) == 1) var[j] = 1;		
-			}
-			//for(int k = 0; k < )
+	int vector_aux[n];
+	int soma_aux = 0, tam1, tam2;
+	
+	for (int i = 0; i < m-1; i++) {
+		for (int k = i+1; k < m; k++) {
+				for (int j = 0; j < n; j++)
+					if(matriz[i][j] + matriz[k][j] == 2){
+						vector_aux[j] = 1;
+						soma_aux++;
+					}else
+						vector_aux[j] = 0;
+			tam1 = qtd_elementos(matriz,i,n);
+			tam2 = qtd_elementos(matriz,k,n);
+			if(tam1 == soma_aux)
+				matriz[k][j] = 0;
+			else if(tam2 == soma_aux)
+				matriz[i][j] = 0;
+			
 		}
 	}
-	cout << endl;
-    printar_matriz(matriz, m, n);
-    cout << endl;
-    //printar_vetor(vetor_aux, n);
-	for(int i = 0; i < n; i++)
-		cout << var[i] << " ";
-	cout << endl;
+	
 
+    saida.open("saidajv.txt", ios::out);
+
+    saida << "Minimize" << endl;
+    saida << " obj: ";
+    
+    string obj_s; i = 1;
+    while(i <= n){
+    	obj_s += "x" + to_string(i) + " + ";
+        i++;
+    }
+    obj_s.erase(obj_s.end() - 3, obj_s.end());
+	
+    saida << obj_s << endl;
+    
+    saida << "Subject To" << endl;
+    saida << "Bounds" << endl;
+    
+    i = 1;
+    while(i <= n){
+        saida << " 0 <= x" << i << " <= 1\n";
+        i++;
+    }
+	
+    saida << "General" << endl;
+    
+    i = 1;
+    while(i <= n){
+        saida << " x" << i;
+        i++;
+    }
+	
+    saida << "\nEnd" << endl;
+    
+    saida.close();
+	
     free(matriz);
 }
