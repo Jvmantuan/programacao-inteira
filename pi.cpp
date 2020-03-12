@@ -54,10 +54,10 @@ int main() {
     }
 
     getline(entrada, linha);
-    m = stoi(linha); //ObtÃ©m o numero de objetos
+    m = stoi(linha); //ObtÃƒÂ©m o numero de objetos
 
     getline(entrada, linha);
-    n = stoi(linha); //ObtÃ©m o numero de subconjuntos
+    n = stoi(linha); //ObtÃƒÂ©m o numero de subconjuntos
 
     int **matriz = aloca_matriz(matriz, m, n);
 
@@ -126,23 +126,25 @@ int main() {
 			}
 		}
 			cons.erase(cons.end() - 3, cons.end());
-			saida << "c" << i + 1 << ": " << cons << "\n";
+			saida << " c" << i + 1 << ": " << cons << "\n";
 	}
-
+	
+	int restr[n];
+	
     saida << "Bounds" << endl;
     for(int i = 0; i < m; i++){
     	if(qtd_elementos(matriz,i,n) == 1){
-    		int aux = 0;
     		for(int j = 0; j < n; j++){
     			if(matriz[i][j] == 1){
-    				saida << " 1 <= x" << to_string(j+1) << " <= 1" << "\n";				 	
-    				aux++;
+    				restr[j] = 1;
 				}
 			} 
 		} else;
 			//saida << " 0 <= x" << to_string(j+1) << " <= 1" << "\n";			
-			
     }
+    for(int j = 0; j < n; j++)
+	    if(restr[j] == 1)
+			saida << " 1 <= x" << to_string(j+1) << " <= 1" << "\n";				 	
 	
     saida << "General" << endl;
     
