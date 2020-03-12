@@ -1,3 +1,9 @@
+/*
+Dupla:
+João Victor
+Bruno Cândido
+*/
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -46,7 +52,7 @@ int main() {
     int j = 0, m = 0, n = 0, contador = 0, i; // m: numero de objetos; n: numero de subconjuntos; 
 
 
-    entrada.open("entrada1.txt"); // abre o arquivo
+    entrada.open("entrada.txt"); // abre o arquivo
 
     if (!entrada.is_open()) {
         cerr << "Erro ao abrir o arquivo.";
@@ -108,10 +114,7 @@ int main() {
 	int soma_aux = 0; // Conta os elementos da matriz lidos até o momento
 			
     saida << "Subject To" << endl;
-    
-    /*
-		Soma duas linhas da matriz, e se essa soma for 2, logo as 
-	*/
+
 	for (int i = 0; i < m; i++) {
 		for (int k = 0; k < m; k++) {
 			if(k > i){
