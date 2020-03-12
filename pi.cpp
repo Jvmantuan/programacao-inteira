@@ -54,10 +54,10 @@ int main() {
     }
 
     getline(entrada, linha);
-    m = stoi(linha); //Obtém o numero de objetos
+    m = stoi(linha); //ObtÃ©m o numero de objetos
 
     getline(entrada, linha);
-    n = stoi(linha); //Obtém o numero de subconjuntos
+    n = stoi(linha); //ObtÃ©m o numero de subconjuntos
 
     int **matriz = aloca_matriz(matriz, m, n);
 
@@ -80,28 +80,8 @@ int main() {
 	
 	int vector_aux[n];
 	int soma_aux = 0, tam1, tam2;
-	
-	for (int i = 0; i < m-1; i++) {
-		for (int k = i+1; k < m; k++) {
-				for (int j = 0; j < n; j++){
-					if(matriz[i][j] + matriz[k][j] == 2){
-						vector_aux[j] = 1;
-						soma_aux++;
-					}else
-						vector_aux[j] = 0;
-				}
-						
-			if(qtd_elementos(matriz,i,n) == soma_aux) 
-				for(int j = 0; j < n; j++) 
-					matriz[k][j] = 3;
-			else if(qtd_elementos(matriz,k,n) == soma_aux) 
-				for(int j = 0; j < n; j++) 
-					matriz[i][j] = 4;
-			
-		}
-	}
-	
-    saida.open("saidajv.txt", ios::out);
+	string cons;
+	saida.open("saidajv.txt", ios::out);
 
     saida << "Minimize" << endl;
     saida << " obj: ";
@@ -116,12 +96,52 @@ int main() {
     saida << obj_s << endl;
     
     saida << "Subject To" << endl;
+	
+	for (int i = 0; i < m-1; i++) {
+		for (int k = i+1; k < m; k++) {
+				for (int j = 0; j < n; j++){
+					if(matriz[i][j] + matriz[k][j] == 2){
+						vector_aux[j] = 1;
+						soma_aux++;
+					}else
+						vector_aux[j] = 0;
+				}
+						
+			if(qtd_elementos(matriz,i,n) == soma_aux) 
+				for(int j = 0; j < n; j++) 
+					matriz[k][j] = matriz[k][j];
+			else if(qtd_elementos(matriz,k,n) == soma_aux) 
+				for(int j = 0; j < n; j++) 
+					matriz[i][j] = matriz[i][j];
+			
+		}
+	}
+	
+	for(int i = 0; i < m; i++){
+			cons.clear();
+		if(qtd_elementos(matriz,i,n) != 0){
+			for(int j = 0; j < n; j++){
+				if(matriz[i][j] == 1)
+					cons += "x" + to_string(j+1) + " + ";	
+			}
+		}
+			cons.erase(cons.end() - 3, cons.end());
+			saida << "c" << i + 1 << ": " << cons << "\n";
+	}
+
     saida << "Bounds" << endl;
-    
-    i = 1;
-    while(i <= n){
-        saida << " 0 <= x" << i << " <= 1\n";
-        i++;
+    for(int i = 0; i < m; i++){
+    	if(qtd_elementos(matriz,i,n) == 1){
+    		int aux = 0;
+    		for(int j = 0; j < n; j++){
+    			if(matriz[i][j] == 1){
+    				saida << " 1 <= x" << to_string(j+1) << " <= 1" << "\n";				 	
+    				aux++;
+				}
+			} 
+		} else;
+			//saida << " 0 <= x" << to_string(j+1) << " <= 1" << "\n";			
+			
     }
 	
     saida << "General" << endl;
@@ -138,6 +158,8 @@ int main() {
 	
 	//for(int i = 0; i < n; i++) cout << soma_aux[i] << " ";
 	printar_matriz(matriz,m,n);
+	
+	cout << qtd_elementos(matriz,6,n) << endl;
 	
     free(matriz);
 }
