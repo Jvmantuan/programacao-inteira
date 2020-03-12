@@ -43,10 +43,10 @@ int main() {
     ifstream entrada; // var responsavel pela abertura de um arquivo
     ofstream saida; 
     string linha, c;
-    int j = 0, m = 0, n = 0, contador = 0,obj, i;
+    int j = 0, m = 0, n = 0, contador = 0, i; // m: numero de objetos; n: numero de subconjuntos; 
 
 
-    entrada.open("entrada6.txt"); // abre o arquivo
+    entrada.open("entrada1.txt"); // abre o arquivo
 
     if (!entrada.is_open()) {
         cerr << "Erro ao abrir o arquivo.";
@@ -54,13 +54,14 @@ int main() {
     }
 
     getline(entrada, linha);
-    m = stoi(linha); //ObtÃƒÆ’Ã‚Â©m o numero de objetos
+    m = stoi(linha); //Obtem o numero de objetos
 
     getline(entrada, linha);
-    n = stoi(linha); //ObtÃƒÆ’Ã‚Â©m o numero de subconjuntos
+    n = stoi(linha); //Obtem o numero de subconjuntos
 
     int **matriz = aloca_matriz(matriz, m, n);
-
+    
+    // Lê uma linha do arquivo e adiciona "1" na posição correspondente da matriz
     while (getline(entrada, linha)) {
         c.clear();
         for (int i = 0; i < linha.length(); i++) {
@@ -78,36 +79,39 @@ int main() {
 
     entrada.close();
 	
-	int vector_aux[n];
-	int soma_aux = 0, tam1, tam2;
 	string cons;
-	saida.open("saidajv.txt", ios::out);
+	saida.open("saida.txt", ios::out);
 
     saida << "Minimize" << endl;
     saida << " obj: ";
     
-    string obj_s; i = 1;
-    while(i <= n){
-    	obj_s += "x" + to_string(i) + " + ";
-        i++;
-    }
+    string obj_s;
+    for(int i = 0; i < n; i++)
+    	obj_s += "x" + to_string(i + 1) + " + ";
     obj_s.erase(obj_s.end() - 3, obj_s.end());
 	
     saida << obj_s << endl;
     
-    int v_aux[m];
+    int *v_aux = (int *) calloc(n, sizeof(int));
     
     for(int i = 0; i < m; i++)
     	v_aux[i] = 0;
     	    
-    for(int i = 0; i < m; i++){
-    	for(j = 0; j < n; j++){
-			v_aux[i] += matriz[i][j];
+    for(int i = 0; i < m; i++) {
+    	for(j = 0; j < n; j++) {
+			v_aux[i] = qtd_elementos(matriz,i,n);
+    		continue;
 		}
 	}
-    
-    
+	
+	int *vector_aux = (int *) calloc(n, sizeof(int)); //Vetor que recebe a soma dos elementos de duas linhas da matriz
+	int soma_aux = 0; // Conta os elementos da matriz lidos até o momento
+			
     saida << "Subject To" << endl;
+    
+    /*
+		Soma duas linhas da matriz, e se essa soma for 2, logo as 
+	*/
 	for (int i = 0; i < m; i++) {
 		for (int k = 0; k < m; k++) {
 			if(k > i){
@@ -129,6 +133,7 @@ int main() {
 		}
 	}
 	
+	// Printa as restrições no arquivo
 	for(int i = 0; i < m; i++){
 			cons.clear();
 		if(v_aux[i] != 1 && v_aux[i] != -1){
@@ -143,12 +148,14 @@ int main() {
 			continue;
 	}
 	
-	int restr[n];
+	int *restr = (int *) calloc(n, sizeof(int)); // Vetor para dizer se uma linha vai ser printada
 	
 	for(int i = 0;i < n; i++)
 		restr[i] = 0;
 	
     saida << "Bounds" << endl;
+    
+    // Se alguma linha tiver apenas um elemento, o elemento do vetor recebe 1
     for(int i = 0; i < m; i++){
     	if(qtd_elementos(matriz,i,n) == 1){
     		for(int j = 0; j < n; j++){
@@ -160,31 +167,25 @@ int main() {
 			restr[j] = 0;
     }
     
-    for(int j = 0; j < n; j++)
-    	cout << restr[j] << " ";
-    cout << endl;
-    
+    // Se alguma linha tiver apenas um elemento, o bound é definido entre 1 e 1, e entre 0 e 1 caso contrário
     for(int j = 0; j < n; j++)
 	    if(restr[j] == 1)
 			saida << " 1 <= x" << to_string(j+1) << " <= 1" << "\n";				 	
 		else
 			saida << " 0 <= x" << to_string(j+1) << " <= 1" << "\n";
+	
+	// Printa as variáveis inteiras
     saida << "General" << endl;
     
-    i = 1;
-    while(i <= n){
-        saida << " x" << i;
-        i++;
-    }
+    for(int i = 0; i < n; i++)
+        saida << " x" << i + 1;
 	
     saida << "\nEnd" << endl;
     
+    // Libera o espaço dos vetores
     saida.close();
-	
-	
-	printar_matriz(matriz,m,n);
-	for(int i = 0; i < n; i++)
-	cout << restr[i] << " ";
-	
     free(matriz);
+    free(vector_aux);
+    free(v_aux);
+    free(restr);
 }
